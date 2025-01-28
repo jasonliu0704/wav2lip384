@@ -7,3 +7,4 @@ wav2lip384生成器网格权重
 脸部检测可以不用face alignment  
 权重下载请三连我b站视频后获取  
 weixin：GemwithSco  
+wav2lip384及新算法都已经适配https://github.com/lipku/LiveTalking
