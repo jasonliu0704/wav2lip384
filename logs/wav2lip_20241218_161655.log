@@ -1,0 +1,13 @@
+2024-12-18 16:16:56,006 [INFO] 使用 cuda 进行推理
+2024-12-18 16:16:56,009 [INFO] 开始执行主程序
+2024-12-18 16:16:56,009 [INFO] 开始处理视频合成任务
+2024-12-18 16:16:56,009 [INFO] 正在读取视频文件: F:\Projects\wav2lip_384_1218\1.mp4
+2024-12-18 16:16:56,019 [INFO] 视频方向信息: 0
+2024-12-18 16:16:56,019 [INFO] 读取视频帧...
+2024-12-18 16:16:56,030 [ERROR] 程序执行过程中出现错误: slice indices must be integers or None or have an __index__ method
+Traceback (most recent call last):
+  File "inference.py", line 480, in <module>
+    main()
+  File "inference.py", line 380, in main
+    frame = frame[y1:y2, x1:x2]
+TypeError: slice indices must be integers or None or have an __index__ method

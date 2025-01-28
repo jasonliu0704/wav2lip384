@@ -1,0 +1,10 @@
+2025-01-01 22:15:22,156 [INFO] 使用 cuda 进行推理
+2025-01-01 22:15:22,163 [INFO] 开始执行主程序
+2025-01-01 22:15:22,163 [INFO] 开始处理视频合成任务
+2025-01-01 22:15:22,163 [ERROR] 程序执行过程中出现错误: --face argument must be a valid path to video/image file
+Traceback (most recent call last):
+  File "inference.py", line 480, in <module>
+    main()
+  File "inference.py", line 342, in main
+    raise ValueError('--face argument must be a valid path to video/image file')
+ValueError: --face argument must be a valid path to video/image file

@@ -1,0 +1,22 @@
+2024-12-18 16:57:46,932 [INFO] 使用 cuda 进行推理
+2024-12-18 16:57:46,935 [INFO] 开始执行主程序
+2024-12-18 16:57:46,935 [INFO] 开始处理视频合成任务
+2024-12-18 16:57:46,935 [INFO] 正在读取视频文件: F:\Projects\wav2lip_384_1218\1.mp4
+2024-12-18 16:57:46,944 [INFO] 视频方向信息: 0
+2024-12-18 16:57:46,944 [INFO] 读取视频帧...
+2024-12-18 16:57:48,825 [INFO] 初始化人脸稳定器: window=12, alpha=1.0, margin=0.1
+2024-12-18 16:57:49,541 [INFO] 初始化拉普拉斯平滑器: kernel_size=3, sigma=1.5, weight=0.1
+2024-12-18 16:57:49,543 [INFO] 开始数据生成
+2024-12-18 16:57:49,543 [INFO] 使用指定的边界框替代人脸检测...
+2024-12-18 16:57:49,557 [ERROR] 程序执行过程中出现错误: OpenCV(4.10.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\resize.cpp:4152: error: (-215:Assertion failed) !ssize.empty() in function 'cv::resize'
+Traceback (most recent call last):
+  File "inference.py", line 480, in <module>
+    main()
+  File "inference.py", line 427, in main
+    for i, (img_batch, mel_batch, frames, coords) in enumerate(tqdm(gen,
+  File "E:\Program Files\anaconda3\envs\w2l384\lib\site-packages\tqdm\std.py", line 1127, in __iter__
+    for obj in iterable:
+  File "inference.py", line 282, in datagen
+    face = cv2.resize(face, (args.img_size, args.img_size))
+cv2.error: OpenCV(4.10.0) D:\a\opencv-python\opencv-python\opencv\modules\imgproc\src\resize.cpp:4152: error: (-215:Assertion failed) !ssize.empty() in function 'cv::resize'
+

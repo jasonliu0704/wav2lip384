@@ -1,0 +1,53 @@
+2024-12-18 16:52:50,944 [INFO] 使用 cuda 进行推理
+2024-12-18 16:52:50,946 [INFO] 开始执行主程序
+2024-12-18 16:52:50,947 [INFO] 开始处理视频合成任务
+2024-12-18 16:52:50,947 [INFO] 正在读取视频文件: F:\Projects\wav2lip_384_1218\1.mp4
+2024-12-18 16:52:50,956 [INFO] 视频方向信息: 0
+2024-12-18 16:52:50,956 [INFO] 读取视频帧...
+2024-12-18 16:52:52,793 [INFO] 初始化人脸稳定器: window=12, alpha=1.0, margin=0.1
+2024-12-18 16:52:53,337 [INFO] 初始化拉普拉斯平滑器: kernel_size=3, sigma=1.5, weight=0.1
+2024-12-18 16:52:53,338 [INFO] 开始数据生成
+2024-12-18 16:52:53,338 [INFO] 对所有帧进行人脸检测
+2024-12-18 16:52:53,339 [INFO] 开始人脸检测
+2024-12-18 16:52:53,573 [WARNING] 内存溢出错误恢复中; 新的batch size: 1
+2024-12-18 16:52:53,573 [ERROR] GPU内存不足，无法进行人脸检测
+2024-12-18 16:52:53,573 [ERROR] 程序执行过程中出现错误: Image too big to run face detection on GPU. Please use the --resize_factor argument
+Traceback (most recent call last):
+  File "inference.py", line 225, in face_detect
+    predictions.extend(detector.get_detections_for_batch(np.array(images[i:i + batch_size])))
+  File "F:\Projects\wav2lip_384_1218\face_detection\api.py", line 66, in get_detections_for_batch
+    detected_faces = self.face_detector.detect_from_batch(images.copy())
+  File "F:\Projects\wav2lip_384_1218\face_detection\detection\sfd\sfd_detector.py", line 42, in detect_from_batch
+    bboxlists = batch_detect(self.face_detector, images, device=self.device)
+  File "F:\Projects\wav2lip_384_1218\face_detection\detection\sfd\detect.py", line 68, in batch_detect
+    olist = net(imgs)
+  File "E:\Program Files\anaconda3\envs\w2l384\lib\site-packages\torch\nn\modules\module.py", line 1553, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "E:\Program Files\anaconda3\envs\w2l384\lib\site-packages\torch\nn\modules\module.py", line 1562, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "F:\Projects\wav2lip_384_1218\face_detection\detection\sfd\net_s3fd.py", line 71, in forward
+    h = F.relu(self.conv1_1(x))
+  File "E:\Program Files\anaconda3\envs\w2l384\lib\site-packages\torch\nn\modules\module.py", line 1553, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "E:\Program Files\anaconda3\envs\w2l384\lib\site-packages\torch\nn\modules\module.py", line 1562, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "E:\Program Files\anaconda3\envs\w2l384\lib\site-packages\torch\nn\modules\conv.py", line 458, in forward
+    return self._conv_forward(input, self.weight, self.bias)
+  File "E:\Program Files\anaconda3\envs\w2l384\lib\site-packages\torch\nn\modules\conv.py", line 454, in _conv_forward
+    return F.conv2d(input, weight, bias, self.stride,
+RuntimeError: Calculated padded input size per channel: (2 x 2). Kernel size: (3 x 3). Kernel size can't be greater than actual input size
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "inference.py", line 480, in <module>
+    main()
+  File "inference.py", line 427, in main
+    for i, (img_batch, mel_batch, frames, coords) in enumerate(tqdm(gen,
+  File "E:\Program Files\anaconda3\envs\w2l384\lib\site-packages\tqdm\std.py", line 1127, in __iter__
+    for obj in iterable:
+  File "inference.py", line 268, in datagen
+    face_det_results = face_detect(frames)
+  File "inference.py", line 229, in face_detect
+    raise RuntimeError(
+RuntimeError: Image too big to run face detection on GPU. Please use the --resize_factor argument
