@@ -4,7 +4,7 @@ wav2lip384生成器网格权重
 此权重超过50w步，损失0.28  
 口型非常完美  
 推理部分拉普拉斯平滑可替换为其他处理方式  
-脸部检测可以不用face alignment  
-权重下载请三连我b站视频后获取  
+脸部检测可以不用face alignment   
 weixin：GemwithSco  
-感谢@lipku的大力支持，wav2lip384及新算法都已经适配https://github.com/lipku/LiveTalking
+感谢@lipku的大力支持，wav2lip384及新算法都已经适配https://github.com/lipku/LiveTalking        
+权重链接: https://pan.baidu.com/s/1KSkidixNzt2gRSnd3iU0dQ?pwd=bcbc    
