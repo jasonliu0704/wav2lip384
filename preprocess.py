@@ -163,7 +163,8 @@ def process_video_file(vfile, args, gpu_id):
         for batch_idx, fb in enumerate(batches):
             try:
                 batch_start = time.time()
-                logger.debug(f"Processing batch {batch_idx+1}/{len(batches)}, {len(fb)} frames")
+                batch_size = len(fb)  # Store batch size before any processing
+                logger.debug(f"Processing batch {batch_idx+1}/{len(batches)}, {batch_size} frames")
                 
                 # Check if device is still available
                 if torch.cuda.is_available() and not torch.cuda.device_count() > gpu_id:
@@ -292,7 +293,8 @@ def process_video_file(vfile, args, gpu_id):
                     torch.cuda.empty_cache()
                     
                 batch_time = time.time() - batch_start
-                logger.debug(f"Batch {batch_idx+1} took {batch_time:.2f}s ({len(fb)/batch_time:.2f} fps)")
+                # Use stored batch_size instead of accessing fb which is now deleted
+                logger.debug(f"Batch {batch_idx+1} took {batch_time:.2f}s ({batch_size/batch_time:.2f} fps)")
                 
             except Exception as e:
                 logger.error(f"Unhandled error in batch {batch_idx}: {str(e)}")
