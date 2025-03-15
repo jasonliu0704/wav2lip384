@@ -163,19 +163,11 @@ def process_video_file(vfile, args, gpu_id):
                         logger.error(f"Error saving face for frame {i}: {e}")
                         missed_frames.append(i)
                 
-                # Clear variables to free memory
-                del batch_tensor
-                del preds
+              
         except Exception as e:
             logger.error(f"Error detecting faces in batch {batch_idx}: {e}")
         
-        # Release GPU memory after each batch
-        if torch.cuda.is_available():
-            torch.cuda.empty_cache()
-            memory_allocated = torch.cuda.memory_allocated(device=f'cuda:{gpu_id}') / (1024 * 1024)
-            memory_reserved = torch.cuda.memory_reserved(device=f'cuda:{gpu_id}') / (1024 * 1024)
-            logger.debug(f"GPU {gpu_id} memory after batch: allocated {memory_allocated:.2f} MB, reserved {memory_reserved:.2f} MB")
-        
+     
         batch_time = time.time() - batch_start
         logger.debug(f"Batch {batch_idx+1} took {batch_time:.2f}s ({len(fb)/batch_time:.2f} fps)")
         batch_idx += 1
