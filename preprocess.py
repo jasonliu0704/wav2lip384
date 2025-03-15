@@ -70,6 +70,10 @@ for id in range(args.ngpu):
 template = 'ffmpeg -loglevel panic -y -i {} -strict -2 {}'
 # template2 = 'ffmpeg -hide_banner -loglevel panic -threads 1 -y -i {} -async 1 -ac 1 -vn -acodec pcm_s16le -ar 16000 {}'
 
+# Add maximum resolution constant at the top of the file after imports
+MAX_WIDTH = 2048
+MAX_HEIGHT = 1080
+
 def process_video_file(vfile, args, gpu_id):
     start_time = time.time()
     logger.info(f"Processing video: {vfile} on GPU {gpu_id}")
@@ -86,7 +90,20 @@ def process_video_file(vfile, args, gpu_id):
         width = int(video_stream.get(cv2.CAP_PROP_FRAME_WIDTH))
         height = int(video_stream.get(cv2.CAP_PROP_FRAME_HEIGHT))
         
+        # Check if resolution exceeds maximum allowed
+        needs_resize = width > MAX_WIDTH or height > MAX_HEIGHT
+        if needs_resize:
+            # Calculate new dimensions maintaining aspect ratio
+            scale_factor = min(MAX_WIDTH / width, MAX_HEIGHT / height)
+            new_width = int(width * scale_factor)
+            new_height = int(height * scale_factor)
+            logger.info(f"Video resolution ({width}x{height}) exceeds maximum allowed. Resizing to {new_width}x{new_height}")
+        else:
+            new_width, new_height = width, height
+            
         logger.info(f"Video specs: {width}x{height}, {fps} fps, {frame_count} frames")
+        if needs_resize:
+            logger.info(f"Working resolution: {new_width}x{new_height}")
         
         # Early validation of video parameters
         if width <= 0 or height <= 0 or frame_count <= 0:
@@ -114,6 +131,10 @@ def process_video_file(vfile, args, gpu_id):
                 logger.warning(f"Empty frame at position {frame_idx}, skipping")
                 frame_idx += 1
                 continue
+            
+            # Resize if needed (maintaining aspect ratio)
+            if needs_resize:
+                frame = cv2.resize(frame, (new_width, new_height), interpolation=cv2.INTER_AREA)
                 
             frames.append(frame)
             frame_idx += 1
