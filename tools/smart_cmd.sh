@@ -9,3 +9,5 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
 # Run the Python script with all arguments passed through
 exec $PYTHON_CMD $SCRIPT_DIR/smart_cmd.py "$@"
+
+python /home/gettrendinsight/tools/smart_cmd.py /home/gettrendinsight/tools/cmd.txt

@@ -221,7 +221,7 @@ class SmartCommandExecutor:
             self.log_handle.write(formatted_msg + '\n')
             self.log_handle.flush()
     
-    def execute_command(self, cmd: SmartCommand) -> bool:
+    def execute_command(self, cmd: SmartCommand, infinite_retries=False) -> bool:
         """Execute a single command and return True if successful."""
         if not cmd.command:
             return True  # Variable definition is always successful
@@ -239,7 +239,7 @@ class SmartCommandExecutor:
         attempts = 0
         max_attempts = max(1, cmd.retries + 1)
         
-        while attempts < max_attempts:
+        while (attempts < max_attempts) or infinite_retries:
             attempts += 1
             attempt_str = f"(attempt {attempts}/{max_attempts})" if max_attempts > 1 else ""
             
@@ -341,7 +341,7 @@ class SmartCommandExecutor:
         
         return success
     
-    def execute_all(self) -> bool:
+    def execute_all(self, infinite_retries=False) -> bool:
         """Execute all commands and return True if all succeeded."""
         self.log(f"Starting execution of {len(self.commands)} commands from {self.command_file}")
         overall_success = True
@@ -349,7 +349,7 @@ class SmartCommandExecutor:
         for i, cmd in enumerate(self.commands):
             self.log(f"Command {i+1}/{len(self.commands)}")
             
-            success = self.execute_command(cmd)
+            success = self.execute_command(cmd, infinite_retries)
             self.previous_success = success
             
             if not success:
@@ -403,6 +403,7 @@ def main():
     parser.add_argument('--timeout', type=int, default=300, help='Default command timeout in seconds')
     parser.add_argument('--quiet', action='store_true', help='Suppress non-error output')
     parser.add_argument('--vars', action='append', default=[], help='Define variables for substitution (KEY=VALUE)')
+    parser.add_argument('--infinite-retries', action='store_true', help='Keep retrying a failing command until it succeeds')
     
     args = parser.parse_args()
     
@@ -428,7 +429,7 @@ def main():
                 executor.log("No commands found in file", error=True)
                 return 1
                 
-            success = executor.execute_all()
+            success = executor.execute_all(infinite_retries=args.infinite_retries)
             return 0 if success else 1
             
     except FileNotFoundError:
